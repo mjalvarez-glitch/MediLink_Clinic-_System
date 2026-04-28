@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2019",
+        "lib": ["es2019"],
+        "moduleResolution": "node",
+        "ignoreDeprecations": "6.0",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "strict": true,
+        "rootDir": "src",
+        "outDir": "dist",
+        "skipLibCheck": true
+    },
+    "include": ["src/**/*"]
+}
