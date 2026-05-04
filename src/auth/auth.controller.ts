@@ -1,6 +1,8 @@
 import { Controller, Post, Body, UseGuards, Request, Get } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { UsersService } from "../users/users.service";
+import { JwtAuthGuard } from "./jwt-auth.guard";
+import { AuthenticatedRequest } from "./auth.interface";
 
 @Controller("auth")
 export class AuthController {
@@ -26,5 +28,13 @@ export class AuthController {
     @Post("refresh")
     async refresh(@Body() body: { refreshToken: string }) {
         return this.authService.refreshTokens(body.refreshToken); 
+    }
+
+    @Get('me')
+    @UseGuards(JwtAuthGuard)
+    async getMe(@Request() req: AuthenticatedRequest) {
+        return {
+            data: req.user 
+        };
     }
 }

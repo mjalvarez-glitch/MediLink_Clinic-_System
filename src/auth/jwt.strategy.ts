@@ -13,7 +13,12 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(payload: any) {
-        // payload contains the data we signed in the token (sub, username, role)
-        return { userId: payload.sub, username: payload.username, role: payload.role };
-    }
+    // The payload contains the 'sub' (id), username, and role from the login token
+    return { 
+      id: payload.sub, 
+      username: payload.username,
+      full_name: payload.full_name,
+      role: payload.role 
+    };
+  }
 }
