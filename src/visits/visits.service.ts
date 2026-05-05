@@ -68,24 +68,45 @@ export class VisitsService {
   }
 
   async findAll(page: number = 1, limit: number = 10, patientId?: number) {
-    try {
-      let query = 'SELECT * FROM visits WHERE 1=1';
-      const params: any[] = [];
+  try {
+    let query = `
+      SELECT 
+        v.visit_id,
+        v.patient_id,
+        v.visit_date,
+        v.reason,
+        v.diagnosis,
+        v.blood_pressure,
+        v.temperature,
+        v.weight_kg,
+        v.height_cm,
+        v.attended_by,
+        p.first_name,
+        p.last_name
+      FROM visits v
+      JOIN patients p ON v.patient_id = p.patient_id
+      WHERE 1=1
+    `;
 
-      if (patientId) {
-        query += ' AND patient_id = ?';
-        params.push(patientId);
-      }
+    const params: any[] = [];
 
-      const offset = (page - 1) * limit;
-      query += ' LIMIT ? OFFSET ?';
-      params.push(limit, offset);
-
-      const [rows] = await this.pool.query(query, params);
-      return rows;
-    } catch (error: any) {
-      console.error('SQL Error:', error.message);
-      throw error;
+    if (patientId) {
+      query += ' AND v.patient_id = ?';
+      params.push(patientId);
     }
+
+    const offset = (page - 1) * limit;
+    query += ' LIMIT ? OFFSET ?';
+    params.push(limit, offset);
+
+    const [rows] = await this.pool.query(query, params);
+    
+    return {
+      data: rows
+    };
+  } catch (error: any) {
+    console.error('SQL Error:', error.message);
+    throw error;
+  }
   }
 }
