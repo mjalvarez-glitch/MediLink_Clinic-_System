@@ -12,7 +12,7 @@ export class PatientsService {
     search?: string,
   ) {
     try {
-      let query = `SELECT *, TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age FROM patients WHERE 1=1`;
+      let query = `SELECT *, TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS calculated_age FROM patients WHERE 1=1`;
       const params: any[] = [];
 
       // Add search filter
