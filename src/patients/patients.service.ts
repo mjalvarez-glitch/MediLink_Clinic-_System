@@ -12,7 +12,7 @@ export class PatientsService {
     search?: string,
   ) {
     try {
-      let query = 'SELECT * FROM patients WHERE 1=1';
+      let query = `SELECT *, TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age FROM patients WHERE 1=1`;
       const params: any[] = [];
 
       // Add search filter
@@ -73,7 +73,8 @@ export class PatientsService {
   async findById(patientId: number) {
     try {
       const [rows] = await this.pool.query(
-        'SELECT * FROM patients WHERE patient_id = ?',
+        `SELECT *, TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS age 
+        FROM patients WHERE patient_id = ?`,
         [patientId],
       );
       return rows[0] || null;
