@@ -34,9 +34,9 @@ export class MedicalHistoryController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Put(':patientId')
-  async update(@Param('patientId') patientId: string, @Body() dto: any) {
-    const result = await this.historyService.update(+patientId, dto);
+  @Put(':id')                                              // ✅ was ':patientId'
+  async update(@Param('id') id: string, @Body() dto: any) { // ✅ was 'patientId'
+    const result = await this.historyService.update(+id, dto);
     if (result.affectedRows === 0) throw new HttpException('Record not found', HttpStatus.NOT_FOUND);
     return { message: 'Medical history updated successfully' };
   }
