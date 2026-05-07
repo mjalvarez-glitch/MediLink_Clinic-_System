@@ -22,7 +22,7 @@ CREATE TABLE patients (
 
 CREATE TABLE emergency_contact_info (
     contact_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    patient_id INT,
+    patient_id INT NOT NULL,
     person_name VARCHAR(100) NOT NULL,
     relationship VARCHAR(50) NOT NULL,
     phone_no VARCHAR(11) NOT NULL,

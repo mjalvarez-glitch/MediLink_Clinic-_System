@@ -16,6 +16,9 @@ export class EmergencyContactsController {
   @Post()
   async create(@Body() dto: any) {
     try {
+      if (!dto.patient_id) {
+        throw new HttpException('Patient ID is required', HttpStatus.BAD_REQUEST);
+      }
       if (!dto.person_name?.trim()) {
         throw new HttpException('Person name is required', HttpStatus.BAD_REQUEST);
       }
@@ -43,6 +46,9 @@ export class EmergencyContactsController {
   @Put(':id')
   async update(@Param('id') id: string, @Body() dto: any) {
     try {
+      if (dto.patient_id !== undefined && !dto.patient_id) {
+        throw new HttpException('Patient ID cannot be empty', HttpStatus.BAD_REQUEST);
+      }
       if (dto.person_name !== undefined && !dto.person_name?.trim()) {
         throw new HttpException('Person name cannot be empty', HttpStatus.BAD_REQUEST);
       }
