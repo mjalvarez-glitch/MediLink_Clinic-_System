@@ -11,6 +11,7 @@ CREATE TABLE users (
 CREATE TABLE patients (
     patient_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(50),
+    middle_name VARCHAR(50),
     last_name VARCHAR(50),
     birthdate DATE,
     sex VARCHAR(10),
@@ -24,7 +25,7 @@ CREATE TABLE emergency_contact_info (
     patient_id INT,
     person_name VARCHAR(100),
     relationship VARCHAR(50),
-    phone_no VARCHAR(50),
+    phone_no VARCHAR(11),
     FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
 );
 

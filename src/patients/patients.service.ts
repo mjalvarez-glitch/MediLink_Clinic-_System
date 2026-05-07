@@ -15,17 +15,18 @@ export class PatientsService {
       let query = `SELECT *, TIMESTAMPDIFF(YEAR, birthdate, CURDATE()) AS calculated_age FROM patients WHERE 1=1`;
       const params: any[] = [];
 
-      // Add search filter
+      // Add search filter - CONSISTENT ORDER
       if (search) {
-        query += ' AND (first_name LIKE ? OR last_name LIKE ? OR email LIKE ? OR phone_no LIKE ?)';
+        query += ' AND (first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ? OR email LIKE ? OR phone_no LIKE ?)';
         const searchTerm = `%${search}%`;
-        params.push(searchTerm, searchTerm, searchTerm, searchTerm);
+        params.push(searchTerm, searchTerm, searchTerm, searchTerm, searchTerm);
       }
 
-      // Add sorting
+      // Add sorting - CONSISTENT ORDER
       const validSortFields = [
         'patient_id',
         'first_name',
+        'middle_name',
         'last_name',
         'birthdate',
         'email',
@@ -42,14 +43,13 @@ export class PatientsService {
 
       const [rows] = await this.pool.query(query, params);
 
-      // Get total count for pagination
+      // Get total count for pagination - CONSISTENT ORDER
       let countQuery = 'SELECT COUNT(*) as total FROM patients WHERE 1=1';
       const countParams: any[] = [];
       if (search) {
-        countQuery +=
-          ' AND (first_name LIKE ? OR last_name LIKE ? OR email LIKE ? OR phone_no LIKE ?)';
+        countQuery += ' AND (first_name LIKE ? OR middle_name LIKE ? OR last_name LIKE ? OR email LIKE ? OR phone_no LIKE ?)';
         const searchTerm = `%${search}%`;
-        countParams.push(searchTerm, searchTerm, searchTerm, searchTerm);
+        countParams.push(searchTerm, searchTerm, searchTerm, searchTerm, searchTerm);
       }
 
       const [countResult] = await this.pool.query(countQuery, countParams);
@@ -88,6 +88,7 @@ export class PatientsService {
     try {
       const {
         first_name,
+        middle_name,
         last_name,
         birthdate,
         sex,
@@ -97,8 +98,8 @@ export class PatientsService {
       } = createPatientDto;
 
       const [result] = await this.pool.query(
-        'INSERT INTO patients (first_name, last_name, birthdate, sex, address, phone_no, email) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [first_name, last_name, birthdate, sex, address, phone_no, email],
+        'INSERT INTO patients (first_name, middle_name, last_name, birthdate, sex, address, phone_no, email) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [first_name, middle_name, last_name, birthdate, sex, address, phone_no, email],
       );
       return result;
     } catch (error: any) {
@@ -111,6 +112,7 @@ export class PatientsService {
     try {
       const {
         first_name,
+        middle_name,
         last_name,
         birthdate,
         sex,
@@ -120,8 +122,8 @@ export class PatientsService {
       } = updatePatientDto;
 
       const [result] = await this.pool.query(
-        'UPDATE patients SET first_name = ?, last_name = ?, birthdate = ?, sex = ?, address = ?, phone_no = ?, email = ? WHERE patient_id = ?',
-        [first_name, last_name, birthdate, sex, address, phone_no, email, patientId],
+        'UPDATE patients SET first_name = ?, middle_name = ?, last_name = ?, birthdate = ?, sex = ?, address = ?, phone_no = ?, email = ? WHERE patient_id = ?',
+        [first_name, middle_name, last_name, birthdate, sex, address, phone_no, email, patientId],
       );
       return result;
     } catch (error: any) {
