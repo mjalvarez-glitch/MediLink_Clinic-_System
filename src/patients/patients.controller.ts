@@ -67,6 +67,37 @@ export class PatientsController {
   @Post()
   async createPatient(@Body() createPatientDto: any) {
     try {
+      if (!createPatientDto.first_name?.trim()) {
+        throw new HttpException(
+          "First name is required",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      if (!createPatientDto.last_name?.trim()) {
+        throw new HttpException(
+          "Last name is required",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      if (!createPatientDto.birthdate) {
+        throw new HttpException(
+          "Birthdate is required",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      if (!createPatientDto.sex?.trim()) {
+        throw new HttpException("Sex is required", HttpStatus.BAD_REQUEST);
+      }
+      if (!createPatientDto.address?.trim()) {
+        throw new HttpException("Address is required", HttpStatus.BAD_REQUEST);
+      }
+      if (!createPatientDto.phone_no?.trim()) {
+        throw new HttpException(
+          "Phone number is required",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       const result = await this.patientsService.create(createPatientDto);
       return {
         message: 'Patient created successfully',
@@ -87,6 +118,55 @@ export class PatientsController {
     @Body() updatePatientDto: any,
   ) {
     try {
+      if (
+        updatePatientDto.first_name !== undefined &&
+        !updatePatientDto.first_name?.trim()
+      ) {
+        throw new HttpException(
+          "First name cannot be empty",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      if (
+        updatePatientDto.last_name !== undefined &&
+        !updatePatientDto.last_name?.trim()
+      ) {
+        throw new HttpException(
+          "Last name cannot be empty",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      if (
+        updatePatientDto.birthdate !== undefined &&
+        !updatePatientDto.birthdate
+      ) {
+        throw new HttpException(
+          "Birthdate cannot be empty",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      if (updatePatientDto.sex !== undefined && !updatePatientDto.sex?.trim()) {
+        throw new HttpException("Sex cannot be empty", HttpStatus.BAD_REQUEST);
+      }
+      if (
+        updatePatientDto.address !== undefined &&
+        !updatePatientDto.address?.trim()
+      ) {
+        throw new HttpException(
+          "Address cannot be empty",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      if (
+        updatePatientDto.phone_no !== undefined &&
+        !updatePatientDto.phone_no?.trim()
+      ) {
+        throw new HttpException(
+          "Phone number cannot be empty",
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+
       const result = await this.patientsService.update(id, updatePatientDto);
       if (result.affectedRows === 0) {
         throw new HttpException(

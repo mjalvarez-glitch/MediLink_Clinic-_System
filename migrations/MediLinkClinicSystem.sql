@@ -10,36 +10,36 @@ CREATE TABLE users (
 
 CREATE TABLE patients (
     patient_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(50),
+    first_name VARCHAR(50) NOT NULL,
     middle_name VARCHAR(50),
-    last_name VARCHAR(50),
-    birthdate DATE,
-    sex VARCHAR(10),
-    address VARCHAR(200),
-    phone_no VARCHAR(11),
+    last_name VARCHAR(50) NOT NULL,
+    birthdate DATE NOT NULL,
+    sex VARCHAR(10) NOT NULL,
+    address VARCHAR(200) NOT NULL,
+    phone_no VARCHAR(11) NOT NULL,
     email VARCHAR(100)
 );
 
 CREATE TABLE emergency_contact_info (
     contact_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     patient_id INT,
-    person_name VARCHAR(100),
-    relationship VARCHAR(50),
-    phone_no VARCHAR(11),
+    person_name VARCHAR(100) NOT NULL,
+    relationship VARCHAR(50) NOT NULL,
+    phone_no VARCHAR(11) NOT NULL,
     FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
 );
 
 CREATE TABLE visits (
     visit_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    patient_id INT,
-    visit_date DATE,
-    reason TEXT,
-    diagnosis TEXT,
-    blood_pressure VARCHAR(50),
-    temperature FLOAT,
-    weight_kg FLOAT,
-    height_cm FLOAT,
-    attended_by VARCHAR(200),
+    patient_id INT NOT NULL,
+    visit_date DATE NOT NULL,
+    reason TEXT NOT NULL,
+    diagnosis TEXT NOT NULL,
+    blood_pressure VARCHAR(50) NOT NULL,
+    temperature FLOAT NOT NULL,
+    weight_kg FLOAT NOT NULL,
+    height_cm FLOAT NOT NULL,
+    attended_by VARCHAR(200) NOT NULL,
     FOREIGN KEY (patient_id) REFERENCES patients(patient_id)
 );
 
@@ -56,12 +56,12 @@ CREATE TABLE medical_history (
 
 CREATE TABLE prescriptions (
     prescription_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    patient_id INT,
-    visit_id INT,
-    medication VARCHAR(200),
-    dosage VARCHAR(200),
-    frequency VARCHAR(200),
-    duration_days INT,
+    patient_id INT NOT NULL,
+    visit_id INT NOT NULL,
+    medication VARCHAR(200) NOT NULL,
+    dosage VARCHAR(200) NOT NULL,
+    frequency VARCHAR(200) NOT NULL,
+    duration_days INT NOT NULL,
     FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
     FOREIGN KEY (visit_id) REFERENCES visits(visit_id)
 );
